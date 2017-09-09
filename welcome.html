@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<title>welcome to friendsapp</title>
+ <meta name="viewport" content="width=device-width;initial-scale=1">
+        <link rel="stylesheet" href="jquery.mobile-1.4.5.css">
+        <script src="jquery.js"></script>
+        <script src="jquery.mobile-1.4.5.js">
+        </script>
+<script>
+function check()
+{var a=document.getElementById("01").value;
+ var b=document.getElementById("02").value;
+<?php
+$servername="localhost";
+$username="";
+$password="";
+$dbname="myDB";
+$conn=new mysqli($servername,$username,$password,$dbname);
+$sql="SELECT id from friendsapp WHERE uname=".a." AND pass=".b;
+$result=$conn->query($sql);
+if($result=="NULL")
+{
+document.getElementById("00").innerHTML="Invalid username or password!!";
+}
+else
+{
+$location="profile.php?id=$result";
+header("Location:$location");
+exit();
+}
+?>
+}
+</script>
+</head>
+<body style="text-align:center">
+<h1 style="background-color:blue;color:white">friendsapp</h1></br>
+<div id="00" style="text-align:center;color:red"></div>
+<h2>sign in:</h2>
+<form onsubmit="check();return false" method="POST">
+<input id="01" type="text" style="height:50px;width:500px;border-radius:10px;text-align:center;font-size:150%" placeholder="Enter username" required></br></br>
+<input id="02" type="password" style="height:50px;width:500px;border-radius:10px;text-align:center;font-size:150%" placeholder="Enter password" required></br>
+<a href="recover.html" style="color:red;font-size:70%">Forget password?</a></br></br>
+<input type="submit" style="height:50px;width:500px;border-radius:10px;text-align:center;font-size:150%;background-color:blue;color:white" value="sign in">
+</form></br>
+Don't have a friendsapp account?</br><a href="sign_up.html" style="color:blue">sign up</a> for free..
+</br>
+</br>
+</br></br></br></br></br>
+<div style="text-align:right">
+<a href="about_us.html">about us</a><a href="feedback.html">feedback</a>
+</div>
+<div style="background-color:blue;color:white;text-align:center">
+&copy Copyright reserverd</br>
+2016-present</div>
+</body>
+</html>

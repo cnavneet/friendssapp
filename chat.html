@@ -1,0 +1,335 @@
+﻿<?php
+session_start();
+?>
+<?php
+$servername="localhost"
+$username="";
+$password="";
+$dbname="myDB";
+$conn=new mysql($servername,$username,$password,$dbname);
+$sql="UPDATE $_SESSION['id']messages SET seen=1 WHERE gid=$_GET['cid'] AND seen=0";
+$conn->query($sql);
+$sql="UPDATE $_GET['cid']messages SET seen=1 WHERE gid=$_SESSION['id'] AND seen=0";
+$conn->query($sql);
+$sql="UPDATE $_GET['cid']m$_SESSION['id'] SET seentime=date('Y/m/d')". ."date('h:i:sa') WHERE activity=0 AND seentime=NULL";
+$conn->query($sql);
+$sql="UPDATE $_SESSION['id']m$_GET['cid'] SET seentime=date('Y/m/d')". ."date('h:i:sa') WHERE activity=1 AND seentime=NULL";
+$conn->query($sql);
+$conn->close();
+?>
+<!DOCTYPE html>
+<html>
+<head>
+<title>chat box</title>
+<meta name="viewport" content="width=device-width;initial-scale=1">
+        <link rel="stylesheet" href="jquery.mobile-1.4.5.css">
+        <script src="jquery.js"></script>
+        <script src="jquery.mobile-1.4.5.js">
+        </script>
+<script>
+function submit()
+{
+var x=document.getElementById("text").value;
+<?php
+$servername="localhost";
+$username="";
+$password="";
+$dbname="myDB";
+$conn=new mysql($servername,$username,$password,$dbname);
+$z=$_GET['x'];
+$sql="INSERT INTO $_SESSION['id']m$_GET['cid'] (activity,stime,message) VALUES ('0',date('Y/m/d')". ."date('h:i:sa'),$z)";
+$conn->query($sql);
+$sql="INSERT INTO $_GET['cid']m$_SESSION['id'] (activity,stime,message) VALUES ('1',date('Y/m/d')". ."date('h:i:sa'),$z)";
+$conn->query($sql);
+$sql="INSERT INTO $_SESSION['id']messages (lm,who,media,seen) VALUES ($z,'0','0','1') WHERE gid=$_GET['cid']";
+$conn->query($sql);
+$sql="INSERT INTO $_GET['cid']messages (lm,who,media,seen) VALUES ($z,'1','0','1') WHERE gid=$_SESSION['id']";
+$conn->query($sql);
+$conn->close();
+?>
+}
+function search()
+{
+var a=document.getElementById("01").value;
+<?php
+$location="se.php?name=".$_GET["a"];
+header("Location:$location");
+exit();
+?>
+}
+function logout()
+{
+<?php
+$servername="localhost";
+$username="";
+$password="";
+$dbname="myDB";
+$conn=new mysqli($servername,$username,$password,$dbname);
+$sql="UPDATE friendsapp SET online='0' WHERE id=$_SESSION['id']";
+$conn->query($sql);
+$conn->close();
+session_destroy();
+$location="welcome.php";
+header("Location:$location");
+exit();
+?>
+}
+$(function(){
+$(".search").keyup(function() 
+{ 
+var inputSearch = $(this).val();
+var dataString = 'searchword='+ inputSearch;
+if(inputSearch!='')
+{
+      $.ajax({
+      type: "POST",
+      url: "search.php",
+      data: dataString,
+      cache: false,
+      success: function(html)
+      {
+      $("#divResult").html(html).show();
+      }
+      });
+}return false;    
+});
+
+jQuery("#divResult").live("click",function(e){ 
+      var $clicked = $(e.target);
+      var $name = $clicked.find('.name').html();
+      var decoded = $("<div/>").html($name).text();
+      $('#inputSearch').val(decoded);
+});
+jQuery(document).live("click", function(e) { 
+      var $clicked = $(e.target);
+      if (! $clicked.hasClass("search")){
+      jQuery("#divResult").fadeOut(); 
+      }
+});
+$('#inputSearch').click(function(){
+      jQuery("#divResult").fadeIn();
+});
+});
+</script>
+<style>
+a:link{color:white; background-color:transparent;text-decoration:none;font-size:70%}
+a:visited{color:white;background-color:transparent;text-decoration:none;font-size:70%}
+a:hover{color:white;background-color:transparent;text-decoration:none;font-size:70%}
+a:active{color:white;background-color:transparent;text-decoration:none;font-size:70%}
+#log li {
+border-top: 1px solid #ccc;
+margin: 0;
+padding: 10px 0;
+}
+.message { font-weight: bold; }
+.message:before { content: ' '; color: #bbb; font-size: 14px; }
+.contentArea{
+                width:600px;
+                margin:0 auto;
+        }
+        #divResult
+        {
+                position:absolute;
+                width:350px;
+                display:none;
+                margin-top:-1px;
+                border:solid 1px #dedede;
+                border-top:0px;
+                overflow:hidden;
+                border-bottom-right-radius: 6px;
+                border-bottom-left-radius: 6px;
+                -moz-border-bottom-right-radius: 6px;
+                -moz-border-bottom-left-radius: 6px;
+                box-shadow: 0px 0px 5px #999;
+                border-width: 3px 1px 1px;
+                border-style: solid;
+                border-color: #333 #DEDEDE #DEDEDE;
+                background-color: white;
+        }
+        .display_box
+        {
+                padding:4px; border-top:solid 1px #dedede; 
+                font-size:12px; height:50px;
+        }
+        .display_box:hover
+        {
+                background:#3bb998;
+                color:#FFFFFF;
+                cursor:pointer;
+        }
+</style>
+</head>
+<body>
+<p style="color:white;background-color:blue;font-size:150%">
+<?php echo "<a href='uprofile.php?id=".$_SESSION["id"]."'><img src='dp.php?id=".$_SESSION["id"]."' style='height:1.5%;width:1.5%'></a>"; ?>
+<span class="contentArea">
+<input type="text" method="POST" class="search" id="inputSearch" style="width:65%;border-radius:5px;font-size:75%;border:none" placeholder="search">
+</sapn>
+<button onclick="search()" style="background-color:blue;color:white;font-size:75%;border:1px solid white">search</button>
+<a href="profile.html">messages</a>
+<span style="background-color:red;font-size:70%;color:white">
+<?php
+$servername="localhost";
+$username="";
+$password="";
+$dbname="myDB";
+$conn=new mysql($servername,$username,$password,$dbname);
+$sql="SELECT * FROM $SESSION['id']messages WHERE who=1 AND seen=0 ORDERBY id DESC";
+$result=$conn->query($sql);
+$z=0;
+while($result->num_rows>0)
+{
+ $z=$z+1;
+}
+if($z==0)
+echo "";
+else 
+echo "$z";
+$conn->close();
+?>
+</span>
+<a href="notifications.html">notifications</a>
+<span style="background-color:red;font-size:70%;color:white">
+<?php
+$servername="localhost";
+$username="";
+$password="";
+$dbname="myDB";
+$conn=new mysql($servername,$username,$password,$dbname);
+$sql="SELECT * FROM $_SESSION['id']notifications WHERE seen=1 ORDERBY id DESC";
+$result=$conn->query($sql);
+$z=0;
+if($result->num_rows>0)
+{while($row=$result)
+ $z=$z+1;
+}
+if($z==0)
+echo "";
+else 
+echo "$z";
+$conn->close();
+?>
+</span>
+<button onclick="logout()" style="background-color:blue;color:white;font-size:50%">log out</button></p>
+<div id="divResult" style="position:relative;left:30px">
+<?php
+$servername="localhost";
+$username="";
+$password="";
+$dbname="myDB";
+$conn=new mysqli($servername,$username,$password,$dbname");
+if($_POST)
+{
+$q=$_POST['searchword'];
+$sql_res=mysql_query("select * from test_auto_complete where username like '%$q%' order by id LIMIT 10");
+while($row=mysql_fetch_array($sql_res))
+{
+$username=$row['name'];
+$media=$row['media'];
+$b_username='<b>'.$q.'</b>';
+$final_username = str_ireplace($q, $b_username, $username);
+?>
+<div class="display_box" align="left">
+<img src="<?php echo $media; ?>" style="width:50px; height:50px; float:left; margin-right:6px;" /><span class="name"><?php echo $final_username; ?></span>&nbsp;<br/><br/>
+<span style="font-size:9px; color:#999999"></span></div>
+<?php
+}
+}
+?>
+</div>
+<div id="fixed">
+<?php
+$servername="localhost";
+$username="";
+$password="";
+$dbname="myDB";
+$conn=new mysql($servername,$username,$password,$dbname);
+$aa="SELECT * FROM friendsapp WHERE id=$_GET['cid']";
+$bb=$conn->query($aa);
+if(bb->num_rows>0)
+{ 
+ echo "<img src='dp.php?id=".$_GET["cid"]."' style='height:40px;width:40px;border-radius:100px;float:left'>";
+ echo "<a href='uprofile.php?id=".$_GET["cid"]."' target='_blank' style='color:black'>";
+ echo "</br><b style='font-size:150%'>$bb['name']</b></a>";
+ if($bb["online"]==1)
+ {
+  echo "<span style='background-color:green;color:green;border-radius:10px;font-size:50%'>23</span></br>";
+ }
+ echo "</div>";
+}
+$conn->close();
+?> 
+<div>
+<form onsubmit="submit();return false">
+<input id="text" type="text" style="width:94%;border-radius:10px;height:30px" placeholder="Send message" required>
+<input type="submit" style="background-color:blue;color:white;border-radius:10px;height:30px;width:4%" value="Send">
+</form>
+</div>
+<div>
+<ul id="log" style="overflow: auto;max-height: 300px;list-style: none;padding: 0">
+<?php 
+$servername="localhost";
+$username="";
+$password="";
+$dbname="myDB";
+$conn=new mysql($servername,$username,$password,$dbname);
+$s="SELECT name FROM friendsapp WHERE id=$_GET['cid'];
+$res=$conn->query($s);
+$n="SELECT name FROM friendsapp WHERE id=$_SESSION['id'];
+$na=$conn->query($s);
+$sql="SELECT * FROM $_SESSION['id']m$_GET['cid'] ORDER BY id DESC";
+$result=$conn->query($sql);
+if($result->num_rows>0)
+{
+ while($row=$result)
+ {
+  if(activity==0 && media=="NULL")
+  {
+   echo "<li class='message'>";
+   echo "<div><a href='uprofile.php?id='".$_SESSION["id"]."' style='text-decoration:underline;color:black;font-size:100%'>$na['name']:</a></div>";
+   echo "$row['message']";
+   echo "</br><span style='color:grey;font-size:70%'>sent:$row['stime'] seen:$row['seentime']</span>";
+   echo "</li>";
+  }
+  else if(activity==0 && message=="NULL")
+  {
+   echo "<li class='message'>";
+   echo "<div><a href='uprofile.php?id='".$_SESSION["cid"]."' style='text-decoration:underline;color:black;font-size:100%'>$na['name']:</a></div>";
+   echo "<a href='me.php?id=".$row["id"]."&table=".$_GET["cid"]."m".$_SESSION["id"]."' target='_blank'>";
+   echo "<img src='".$row["media"]."' style='width:70px;height:70px'>";
+   echo "</a>";
+   echo "</br><span style='color:grey;font-size:70%'>sent:$row['stime'] seen:$row['seentime']</span>";
+   echo "</li>";
+  }
+  else if(activity==1 && media=="NULL")
+  {
+   echo "<li class='message'>";
+   echo "<div><a href='uprofile.php?id='".$_GET["cid"]."' style='text-decoration:underline;color:black;font-size:100%'>$res['name']:</a></div>";
+   echo $row["message"];
+   echo "</br><span style='color:grey;font-size:70%'>received:$row['stime'] seen:$row['seentime']</span>";
+   echo "</li>";
+  }
+  else if(activity==1 && message=="NULL")
+  {
+   echo "<li class='message'>";
+   echo "<div><a href='uprofile.php?id='".$_SESSION["cid"]."' style='text-decoration:underline;color:black;font-size:100%'>$res['name']:</a></div>";
+   echo "<a href='me.php?id=".$row["id"]."&table=".$_GET["cid"]."m".$_SESSION["id"]."' target='_blank'>";
+   echo "<img src='".$row["media"]."' style='width:70px;height:70px'>";
+   echo "</a>";
+   echo "</br><span style='color:grey;font-size:70%'>received:$row['stime'] seen:$row['seentime']</span>";
+   echo "</li>";
+  }
+ }
+}
+$conn->close();
+?>
+</ul>
+</div>
+<div>
+<form action=<?php submitmedia.php?cid=$_GET["cid"] ?> method="POST">
+<span style="color:grey;font-size:80%"><b>send media:</b></span>
+<input type="file" name="media" style="background-color:blue;color:white" enctype="multipart/form-data">
+<input type="submit" value="send" style="border-radius:10px;color:white;background-color:blue">
+</form>
+</body>
+</html>

@@ -1,0 +1,349 @@
+﻿<?php
+session_start();
+?>
+<!DOCTYPE html>
+<html>
+<head>
+<title>change</title>
+<meta name="viewport" content="width=device-width;initial-scale=1">
+        <link rel="stylesheet" href="jquery.mobile-1.4.5.css">
+        <script src="jquery.js"></script>
+        <script src="jquery.mobile-1.4.5.js">
+        </script>
+<script>
+function work()
+{
+var t=document.getElementById("t").value;
+var f=document.getElementById("f").value;
+var to=document.getElementById("to").value;
+<?php
+$servername="localhost";
+$username="";
+$password="";
+$dbname="myDB";
+$conn=new mysqli($servername,$username,$password,$dbname);
+$sql="INSERT INTO $_SESSION['id']work (text,from,to) VALUES ($_GET['t'],$_GET['f'],$_GET['to'])";
+$conn->query($sql);
+$s="SELECT name FROM friendsapp WHERE id=$_SESSION['id']";
+$name=$conn->query($sql);
+$sql="SELECT * FROM $_SESSION['id']friends";
+$resut=$conn->query($sql);
+if($result->num_rows>0)
+{
+ while($row=$result)
+ {
+  $ss="SELECT * FROM $row['fid']friends";
+  $res=$conn->query($ss);
+  if($res->num_rows>0)
+  {
+   while($rws=$res)
+   {
+    if($rws["fid"]==$_SESSION["id"])
+    {
+     $s="INSERT INTO $row['fid']notifications (link,text,seen) VALUES ('about.php?id=".$_SESSION["id"]."','$name updated work status','1')";
+     $conn->query($s);
+    }
+   }
+  }
+ }
+}
+$location="about.php?id=$_SESSION['id']";
+header("Location:$location");
+exit();
+?>
+}
+function live()
+{
+var l=document.getElementById("l").value;
+var d=document.getElementById("d").value;
+<?php
+$servername="localhost";
+$username="";
+$password="";
+$dbname="myDB";
+$conn=new mysqli($servername,$username,$password,$dbname);
+$sql="INSERT INTO $_SESSION['id']live (text,mo) VALUES ($_GET['l'],$_GET['d'])";
+$conn->query($sql);
+$s="SELECT name FROM friendsapp WHERE id=$_SESSION['id']";
+$name=$conn->query($sql);
+$sql="SELECT * FROM $_SESSION['id']friends";
+$resut=$conn->query($sql);
+if($result->num_rows>0)
+{
+ while($row=$result)
+ {
+  $ss="SELECT * FROM $row['fid']friends";
+  $res=$conn->query($ss);
+  if($res->num_rows>0)
+  {
+   while($rws=$res)
+   {
+    if($rws["fid"]==$_SESSION["id"])
+    {
+     $s="INSERT INTO $row['fid']notifications (link,text,seen) VALUES ('about.php?id=".$_SESSION["id"]."','$name updated living location','1')";
+     $conn->query($sql);
+    }
+   }
+  }
+ }
+}
+$location="about.php?id=$_SESSION['id']";
+header("Location:$location");
+exit();
+?>
+}
+function study()
+{
+var s=document.getElementById("s").value;
+var d1=document.getElementById("d1").value;
+var d2=document.getElementById("d2").value;
+<?php
+$servername="localhost";
+$username="";
+$password="";
+$dbname="myDB";
+$conn=new mysqli($servername,$username,$password,$dbname);
+$sql="INSERT INTO $_SESSION["id"]study (text,from,to) VALUES ($_GET['s'],$_GET['d1'],$_GET['d2']);
+$conn->query($sql);
+$s="SELECT name FROM friendsapp WHERE id=$_SESSION['id']";
+$name=$conn->query($sql);
+$sql="SELECT * FROM $_SESSION['id']friends";
+$resut=$conn->query($sql);
+if($result->num_rows>0)
+{
+ while($row=$result)
+ {
+  $ss="SELECT * FROM $row['fid']friends";
+  $res=$conn->query($ss);
+  if($res->num_rows>0)
+  {
+   while($rws=$res)
+   {
+    if($rws["fid"]==$_SESSION["id"])
+    {
+     $s="INSERT INTO $row['fid']notifications (link,text,seen) VALUES ('about.php?id=".$_SESSION["id"]."','$name updated study destination','1')";
+     $conn->query($sql);
+    }
+   }
+  }
+ }
+}
+$location="about.php?id=$_SESSION['id']";
+header("Location:$location");
+exit();
+?>
+}
+function search()
+{
+var a=document.getElementById("01").value;
+<?php
+$location="se.php?name=".$_GET["a"];
+header("Location:$location");
+exit();
+?>
+}
+function logout()
+{
+<?php
+$servername="localhost";
+$username="";
+$password="";
+$dbname="myDB";
+$conn=new mysqli($servername,$username,$password,$dbname);
+$sql="UPDATE friendsapp SET online='0' WHERE id=$_SESSION['id']";
+$conn->query($sql);
+$conn->close();
+session_destroy();
+$location="welcome.php";
+header("Location:$location");
+exit();
+?>
+}
+$(function(){
+$(".search").keyup(function() 
+{ 
+var inputSearch = $(this).val();
+var dataString = 'searchword='+ inputSearch;
+if(inputSearch!='')
+{
+      $.ajax({
+      type: "POST",
+      url: "search.php",
+      data: dataString,
+      cache: false,
+      success: function(html)
+      {
+      $("#divResult").html(html).show();
+      }
+      });
+}return false;    
+});
+
+jQuery("#divResult").live("click",function(e){ 
+      var $clicked = $(e.target);
+      var $name = $clicked.find('.name').html();
+      var decoded = $("<div/>").html($name).text();
+      $('#inputSearch').val(decoded);
+});
+jQuery(document).live("click", function(e) { 
+      var $clicked = $(e.target);
+      if (! $clicked.hasClass("search")){
+      jQuery("#divResult").fadeOut(); 
+      }
+});
+$('#inputSearch').click(function(){
+      jQuery("#divResult").fadeIn();
+});
+});
+</script>
+<style>
+a:link{color:white; background-color:transparent;text-decoration:none;font-size:70%}
+a:visited{color:white;background-color:transparent;text-decoration:none;font-size:70%}
+a:hover{color:white;background-color:transparent;text-decoration:none;font-size:70%}
+a:active{color:white;background-color:transparent;text-decoration:none;font-size:70%}
+.contentArea{
+                width:600px;
+                margin:0 auto;
+        }
+        #divResult
+        {
+                position:absolute;
+                width:350px;
+                display:none;
+                margin-top:-1px;
+                border:solid 1px #dedede;
+                border-top:0px;
+                overflow:hidden;
+                border-bottom-right-radius: 6px;
+                border-bottom-left-radius: 6px;
+                -moz-border-bottom-right-radius: 6px;
+                -moz-border-bottom-left-radius: 6px;
+                box-shadow: 0px 0px 5px #999;
+                border-width: 3px 1px 1px;
+                border-style: solid;
+                border-color: #333 #DEDEDE #DEDEDE;
+                background-color: white;
+        }
+        .display_box
+        {
+                padding:4px; border-top:solid 1px #dedede; 
+                font-size:12px; height:50px;
+        }
+        .display_box:hover
+        {
+                background:#3bb998;
+                color:#FFFFFF;
+                cursor:pointer;
+        }
+</style>
+</head>
+<body>
+<p style="color:white;background-color:blue;font-size:150%">
+<?php echo "<a href='uprofile.html?id=".$_SESSION["id"]."'><img src='dp.php?id=".$_SESSION["id"]."' style='height:1.5%;width:1.5%'></a>"; ?>
+<span class="contentArea">
+<input type="text" method="POST" class="search" id="inputSearch" style="width:65%;border-radius:5px;font-size:75%;border:none" placeholder="search">
+</sapn>
+<button onclick="search()" style="background-color:blue;color:white;font-size:75%;border:1px solid white">search</button>
+<a href="profile.html">messages</a>
+<span style="background-color:red;font-size:70%;color:white">
+<?php
+$servername="localhost";
+$username="";
+$password="";
+$dbname="myDB";
+$conn=new mysql($servername,$username,$password,$dbname);
+$sql="SELECT * FROM $_SESSION['id']messages WHERE who=1 AND seen=0 ORDERBY id DESC";
+$result=$conn->query($sql);
+$z=0;
+while($result->num_rows>0)
+{
+ $z=$z+1;
+}
+if($z==0)
+echo "";
+else 
+echo "$z";
+$conn->close();
+?>
+</span>
+<a href="notifications.html">notifications</a>
+<span style="background-color:red;font-size:70%;color:white"><?php
+$servername="localhost";
+$username="";
+$password="";
+$dbname="myDB";
+$conn=new mysql($servername,$username,$password,$dbname);
+$sql="SELECT * FROM $_SESSION['id']notifications WHERE seen=1 ORDERBY id DESC";
+$result=$conn->query($sql);
+$z=0;
+if($result->num_rows>0)
+{while($row=$result)
+ $z=$z+1;
+}
+if($z==0)
+echo "";
+else 
+echo "$z";
+$conn->close();
+?>
+</span>
+<button onclick="logout()" style="background-color:blue;color:white;font-size:50%">log out</button></p>
+<div id="divResult" style="position:relative;left:30px">
+<?php
+$servername="localhost";
+$username="";
+$password="";
+$dbname="myDB";
+$conn=new mysqli($servername,$username,$password,$dbname");
+if($_POST)
+{
+$q=$_POST['searchword'];
+$sql_res=mysql_query("select * from test_auto_complete where username like '%$q%' order by id LIMIT 10");
+while($row=mysql_fetch_array($sql_res))
+{
+$username=$row['name'];
+$media=$row['media'];
+$b_username='<b>'.$q.'</b>';
+$final_username = str_ireplace($q, $b_username, $username);
+?>
+<div class="display_box" align="left">
+<img src="<?php echo $media; ?>" style="width:50px; height:50px; float:left; margin-right:6px;" /><span class="name"><?php echo $final_username; ?></span>&nbsp;<br/><br/>
+<span style="font-size:9px; color:#999999"></span></div>
+<?php
+}
+}
+?>
+</div>
+</br>
+<?php
+if($_GET["action"]=="work")
+{
+ echo "<form onsubmit='work()' style='text-align:center'>";
+ echo "<h3 style='text-align:center'>Enter work place:</h3>";
+ echo "<input id='t' type='text' style='height:30px;width:500px;border-radius:10px' placeholder='Where do you work?' required></br></br>";
+ echo "<input id='f' type='date' style='height:30px;width:230px;border-radius:10px' placeholder='from:' required> - ";
+ echo "<input id='to' type='date' style='height:30px;width:230px;border-radius:10px' placeholder='To:' required></br></br>";
+ echo "<input type='submit' style='height:50px;width:500px;border-radius:10px;background-color:green;color:white' value='Add'>"; 
+ echo "</form>";
+}
+else if($_GET=="live")
+{ 
+ echo "<form onsubmit='live()' style='text-align:center'>";
+ echo "<h3 style='text-align:center'>Enter your place</h3>";
+ echo "<input id='l' type='text' style='height:30px;width:500px;border-radius:10px' placeholder='your place' required></br></br>";
+ echo "<input id='d' type='date' style='height:30px;width:230px;border-radius:10px' placeholder='moved in' required></br></br>";
+ echo "<input type='submit' style='height:50px;width:500px;border-radius:10px;background-color:green;color:white' value='Add'>"; 
+ echo "</form>";
+}
+else
+{
+ echo "<form onsubmit='study()' style='text-align:center'>";
+ echo "<h3 style='text-align:center'>Enter where you studied:</h3>";
+ echo "<input id='s' type='text' style='height:30px;width:500px;border-radius:10px' placeholder='Where do you study?' required></br></br>";
+ echo "<input id='d1' type='date' style='height:30px;width:230px;border-radius:10px' placeholder='from:' required> - ";
+ echo "<input id='d2' type='date' style='height:30px;width:230px;border-radius:10px' placeholder='To:' required></br></br>";
+ echo "<input type='submit' style='height:50px;width:500px;border-radius:10px;background-color:green;color:white' value='Add'>"; 
+ echo "</form>";
+?>
+</body>
+</html>

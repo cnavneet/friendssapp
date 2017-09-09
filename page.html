@@ -1,0 +1,81 @@
+﻿<?php
+session_start();
+?>
+<!DOCTYPE html>
+<html>
+<head>
+<title>search</title>
+<meta name="viewport" content="width=device-width;initial-scale=1">
+        <link rel="stylesheet" href="jquery.mobile-1.4.5.css">
+        <script src="jquery.js"></script>
+        <script src="jquery.mobile-1.4.5.js">
+        </script>
+<script>
+function search()
+{
+var a=document.getElementById("01");
+<?php
+$location="search.php?name=".a;
+header("Location:$location");
+exit();
+?>
+}
+function logout()
+{
+<?php
+$servername="localhost";
+$username="";
+$password="";
+$dbname="myDB";
+$conn=new mysqli($servername,$username,$password,$dbname);
+$sql="UPDATE friendsapp SET online='0' WHERE id=$_SESSION["id"]";
+$conn->query($sql);
+$conn->close();
+session_destroy();
+$location="welcome.php";
+header("Location:$location");
+exit();
+?>
+}
+</script>
+<style>
+a:link{color:white; background-color:transparent;text-decoration:none;font-size:70%}
+a:visited{color:white;background-color:transparent;text-decoration:none;font-size:70%}
+a:hover{color:white;background-color:transparent;text-decoration:none;font-size:70%}
+a:active{color:white;background-color:transparent;text-decoration:none;font-size:70%}
+</style>
+</head>
+<body>
+<p style="color:white;background-color:blue;font-size:150%">
+<a href="uprofile.html"><img src="dp.php?id=$_SESSION['id']" style="height:1.5%;width:1.5%"></a>
+<input id="01" type="search" style="width:65%;border-radius:5px;font-size:75%;border:none" placeholder="search">
+<button onclick="search()" style="background-color:blue;color:white;font-size:75%;border:1px solid white">search</button>
+<a href="profile.html">messages</a>
+<span style="background-color:red;font-size:70%;color:white">223</span>
+<a href="notifications.html">notifications</a><span style="background-color:red;font-size:70%;color:white">223</span>
+<button onclick="logout()" style="background-color:blue;color:white;font-size:50%">log out</button></p>
+<h2 style="text-align:center">Create chat group</h2>
+<p style="text-align:center">
+<form onsubmit="create()" style="text-align:center">
+<input type="text" style="width:510px;height:30px;border-radius:10px" placeholder="Enter chat group name" required></br></br>
+<input type="submit" style="width:510px;height:50px;border-radius:10px;background-color:green;color:white" value="Create">
+</form>
+</p>
+<h3>Your chat groups</h3>
+<ul>
+<?php
+$servername="localhost';
+$username="";
+$password="";
+$dbname="myDB";
+$conn=new mysqli($servername,$username,$password,$dbname);
+$sql="SELECT * FROM 
+
+
+
+
+<li><a href="" target="_blank" style="text-decoration:underline;color:black;font-size:100%">ftbe 2016</a></li>
+<li><a href="" target="_blank" style="text-decoration:underline;color:black;font-size:100%">heartstealer</a></li>
+</ul>
+</body>
+</html>

@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<title>password recovery</title>
+<meta name="viewport" content="width=device-width;initial-scale=1">
+        <link rel="stylesheet" href="jquery.mobile-1.4.5.css">
+        <script src="jquery.js"></script>
+        <script src="jquery.mobile-1.4.5.js">
+        </script>
+<script>
+function check()
+{
+var a=document.getElementById("01");
+var b=document.getElementById("02");
+var c=document.getElementById("03");
+<?php 
+$servername="localhost";
+$username="";
+$password="";
+$dbname="myDB";
+$conn=new mysqli($servername,$username,$password,$dbname);
+$sql="SELECT pass FROM friendsapp WHERE uname=".a." ,sques=".b." AND sans=".c;
+$result=$conn->query($sql);
+if($result=="NULL")
+{
+document.getElementById("00").innerHTML="Invalid entry!!";
+}
+else
+{
+document.getElementById("00").innerHTML="Your password:$result";
+$i=0;
+while($i>=0)
+{if($i==100)
+ {
+  $location="welcome.php";
+  header("Location:$location");
+  break();
+ }
+}
+}
+?>
+}
+</script>
+</head>
+<body style="text-align:center">
+<h1 style="background-color:blue;color:white">friendsapp</h1>
+</br>
+<div id="00" style="text-align:center;color:red"></div>
+<h2>password recovery</h2>
+<form onsubmit="check();return false">
+<input id="01" type="text" style="width:510px;height:30px;border-radius:10px" placeholder="Enter username" required></br></br>
+<input id="02" type="text" style="width:510px;height:30px;border-radius:10px" placeholder="Enter security question" required></br></br>
+<input id="03" type="text" style="width:510px;height:30px;border-radius:10px" placeholder="Enter security answer" required></br></br>
+<input type="submit" style="width:510px;height:50px;border-radius:10px;color:white;background-color:green" value="Get password">
+</form>
+</body>
+</html>

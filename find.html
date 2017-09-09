@@ -1,0 +1,19 @@
+﻿<?php
+    $key=$_GET['key'];
+    $servername="localhost";
+    $username="";
+    $password="";
+    $dbname="myDB";
+    $con=mysql_connect($servername,$username,$password);
+    $db=mysql_select_db($dbname,$con);
+    $query=mysql_query("select * from friendsapp where name LIKE '%{$key}%'");
+    while($row=mysql_fetch_assec($query))
+    {
+      echo "<div>";
+      echo "<a href='uprofile.php?id=".$row["id"]."'>";
+      echo "<img src='uploads/me.php?id=".$row['id']."&table=friendsapp' style='height:40px;width:40pxfloat:left'>";
+      echo "$row['name']";
+      echo "</a>";
+      echo "</div>";
+    }
+?>

@@ -1,0 +1,14 @@
+﻿<?php
+session_start();
+$servername="loaclhost";
+$username="";
+$password"";
+$dbname="myDB";
+$conn=new mysqli($servername,$username,$password,$dbname);
+$sql="SELECT dp FROM friendsapp WHERE id=$_GET['id']";
+$result=$conn->query($sql);
+echo "$result";
+flush();
+$conn->close();
+?>
+

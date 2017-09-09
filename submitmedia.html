@@ -1,0 +1,20 @@
+﻿<?php
+session_start();
+$servername="localhost";
+$username="";
+$password="";
+$dbname="myDB";
+$conn=new mysql($servername,$username,$password,$dbname);
+$sql="INSERT INTO $_GET['cid']m$_SESSION['id'] (activity,stime,media) VALUES ('1',date('Y/m/d')". ."date('h:i:sa'),$_FILES['file']['name'])";
+$conn->query($sql);
+$sql="INSERT INTO $_SESSION['id']m$_GET['cid'] (activity,stime,media) VALUES ('0',date('Y/m/d')". ."date('h:i:sa'),$_FILES['file']['name'])";
+$conn->query($sql);
+$sql="UPDATE $_GET['cid']messages SET who=1,media=1,seen=1 WHERE gid=$_SESSION['id']";
+$conn->query($sql);
+$sql="UPDATE $_SESSION['id']messages SET who=0,media=1,seen=1 WHERE gid=$_GET['cid']";
+$conn->query($sql);
+copy( $_FILES['file']['name'], "/uploads" );
+$location="chat.php?cid=$_GET["cid"]";
+header("Location:$location");
+exit();
+?>

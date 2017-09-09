@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html>
+<head><title>feedback</title>
+<meta name="viewport" content="width=device-width;initial-scale=1">
+        <link rel="stylesheet" href="jquery.mobile-1.4.5.css">
+        <script src="jquery.js"></script>
+        <script src="jquery.mobile-1.4.5.js">
+        </script>
+<style>
+a:link{color:white; background-color:transparent;text-decoration:none}
+a:visited{color:white;background-color:transparent;text-decoration:none}
+a:hover{color:white;background-color:transparent;text-decoration:none}
+a:active{color:white;background-color:transparent;text-decoration:none}
+</style>
+<script>
+function feedback()
+{
+ var a=document.getElementById("00").value;
+ var b=document.getElementByid("01").value;
+ var c=document.getElementById("02").value;
+ var d=document.getElementById("03").value;
+ var e=document.getElementById("04").value;
+ <?php
+ $servername="localhost";
+ $username="";
+ $password="";
+ $dbname="myDB";
+ $conn=new mysql($servername,$username,$password,$dbname);
+ $sql="INSERT INTO feedback (name,country,cno,email,feedback) VALUES ($_GET["a"],$_GET["b"],$_GET["c"],$_GET["d"],$_GET["e"])";
+ $conn->query($sql);
+ $conn->close();
+ ?>
+}
+</script>
+</head>
+<body>
+<h1 style="background-color:blue;text-align:center;color:white">friendsapp </h1>
+<form onsubmit="feedback()" style="text-align:center">
+<h2>feedback</h2>
+<a href="welcome.html" style="color:grey;text-align:center;font-size:90%"><b>sign in</b></a>
+<a href="welcome.html" style="color:grey;text-align:center;font-size:90%"><b>sign up</b></a></br>
+<input id="00" type="text" name="name" placeholder="name" style="border-radius:10px;text-align:center;height:30px;width:510px" required></br></br>
+<input id="01" type="text" name="country" placeholder="country" style="border-radius:10px;text-align:center;height:30px;width:510px" required></br></br>
+<input id="02" type="text" name="contact" placeholder="contact number" style="border-radius:10px;text-align:center;height:30px;width:510px" required></br></br>
+<input id="03" type="email" name="email" placeholder="email-id" style="border-radius:10px;text-align:center;height:30px;width:510px" required></br></br>
+<textarea id="04" name="feedback" rows="10" cols="100" placeholder="submit your feedback or queries!!" style="text-align:center;border-radius:10px" required></textarea></br></br>
+<input type="submit" style="width:510px;height:50px;background-color:green;color:white;border-radius:10px"></form></br>
+<div style="background-color:blue;color:white;text-align:center">
+&copy Copyright reserverd</br>
+2016-present</div>
+</body>
+</html>

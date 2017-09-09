@@ -1,0 +1,25 @@
+﻿<?php
+session_start();
+$servername="localhost";
+$username="";
+$password="";
+$dbname="myDB";
+$conn=new mysqli($servername,$username,$password,$dbname");
+if($_POST)
+{
+$q=$_POST['searchword'];
+$sql_res=mysql_query("select * from test_auto_complete where username like '%$q%' order by id LIMIT 10");
+while($row=mysql_fetch_array($sql_res))
+{
+$username=$row['name'];
+$media=$row['media'];
+$b_username='<b>'.$q.'</b>';
+$final_username = str_ireplace($q, $b_username, $username);
+?>
+<div class="display_box" align="left">
+<img src="<?php echo $media; ?>" style="width:50px; height:50px; float:left; margin-right:6px;" /><span class="name"><?php echo $final_username; ?></span>&nbsp;<br/><br/>
+<span style="font-size:9px; color:#999999"></span></div>
+<?php
+}
+}
+?>

@@ -1,0 +1,96 @@
+﻿<?php
+session_start();
+?>
+<!DOCTYPE html>
+<html>
+<head>
+<title>media</title>
+<meta name="viewport" content="width=device-width;initial-scale=1">
+        <link rel="stylesheet" href="jquery.mobile-1.4.5.css">
+        <script src="jquery.js"></script>
+        <script src="jquery.mobile-1.4.5.js">
+        </script>
+<script>
+function search()
+{
+var a=document.getElementById("01").value;
+<?php
+$location="se.php?name=".$_GET["a"];
+header("Location:$location");
+exit();
+?>
+}
+function logout()
+{
+<?php
+$servername="localhost";
+$username="";
+$password="";
+$dbname="myDB";
+$conn=new mysqli($servername,$username,$password,$dbname);
+$sql="UPDATE friendsapp SET online='0' WHERE id=$_SESSION['id']";
+$conn->query($sql);
+$conn->close();
+session_destroy();
+$location="welcome.php";
+header("Location:$location");
+exit();
+?>
+}
+</script>
+<style>
+a:link{color:white; background-color:transparent;text-decoration:none;font-size:70%}
+a:visited{color:white;background-color:transparent;text-decoration:none;font-size:70%}
+a:hover{color:white;background-color:transparent;text-decoration:none;font-size:70%}
+a:active{color:white;background-color:transparent;text-decoration:none;font-size:70%}
+</style>
+</head>
+<?php
+if($_GET["table"]=="")
+{
+ echo "<body>";
+ 
+ echo "</br></h3 style='text-align:center'>Media</h3>";
+ $sql="SELECT id,file FROM $_GET['id']activity ORDER BY id DESC";
+ $result=$conn->query($sql);
+ if($result->num-rows>0)
+ {
+  $i=0;
+  while($row=$result)
+  {
+   echo "<a href='media.php?id=".$row['id']."&table=".$_GET['id']."' target='_blank'>
+   echo "<img src='uploads/me.php?id=".$row["id"]."&table=".$_GET["id"]."activity' style='width:200px;height:200px'>";
+   echo "</br>";
+   print "Content-Type:application/octet-stream; name=\"$_GET["file"]\"\r\n";
+   print "Content-Disposition: attachment; filename=\"$_GET["file"]\"\r\n\n";
+   echo "</br>";
+   $i=$i+1;
+   if($i%5==0)
+   {
+    echo "</br>";
+   }
+  }
+ }
+}
+else
+{ 
+ echo "<body style='background-color:black'>";
+ $sql="SELECT file FROM $_GET['table'] WHERE id=$_GET['id'];
+ $result=$conn->query($sql);
+ if($result->num_rows>0)
+ {
+  while($row=$result)
+  {
+   echo "<a href='media.php?id=".$row['id']."&table=".$_GET['id']."' target='_blank'>
+   echo "<img src='uploads/me.php?id=".$_GET["id"]."&table=".$_GET["table"]."' style='width:200px;height:200px'>";
+   echo "</br>";
+   print "Content-Type:application/octet-stream; name=\"$_GET["file"]\"\r\n";
+   print "Content-Disposition: attachment; filename=\"$_GET["file"]\"\r\n\n";
+   echo "</br>";
+  }
+ }
+}
+$conn->close();
+?>
+</body>
+</html>

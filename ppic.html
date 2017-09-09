@@ -1,0 +1,43 @@
+﻿<?php
+session_start()
+$servername="localhost";
+$username="";
+$password="";
+$dbname="myDB";
+$conn=new mysqli($servername,$username,$password,$dnname);
+$sql="UPDATE friendsapp SET dp=$_FILES['file']['name'] WHERE id=$_SESSION['id']";
+$conn->query($sql);
+$sq="INSERT INTO $_SESSION['id']activity (file,dp) VALUES ($_FILES['file']['name'],'0')";
+$conn->query($sq);
+if( $_FILES['file']['name'] != "" )
+{
+ copy( $_FILES['file']['name'], "/uploads" ) or
+ die( "Could not copy file!");
+}
+$s="SELECT name FROM friendsapp WHERE id=$_SESSION['id']";
+$name=$conn->query($sql);
+$sql="SELECT * FROM $_SESSION['id']friends";
+$resut=$conn->query($sql);
+if($result->num_rows>0)
+{
+ while($row=$result)
+ {
+  $ss="SELECT * FROM $row['fid']friends";
+  $res=$conn->query($ss);
+  if($res->num_rows>0)
+  {
+   while($rws=$res)
+   {
+    if($rws["fid"]==$_SESSION["id"])
+    {
+     $s="INSERT INTO $row['fid']notifications (link,text,seen) VALUES ('about.php?id=".$_SESSION["id"]."','$name updated profile picture','1')";
+     $conn->query($sql);
+    }
+   }
+  }
+ }
+}
+$location="uprofile.php?id=$_SESSION['id']";
+header("Location:$location");
+exit();
+?>

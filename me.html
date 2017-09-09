@@ -1,0 +1,19 @@
+﻿<?php
+session_start();
+$servername="localhost";
+$username="";
+$dbname="";
+$dbname="myDB";
+$conn=new mysql($servername,$username,$password,$dbname);
+$sql="SELECT file FROM $_GET['table'] WHERE id=$_GET['id']";
+$result=$conn->query($sql);
+if($result->num_rows>0)
+{
+ while($row=$result)
+ {
+  echo "$row['file']";
+ }
+}
+flush();
+$conn->close();
+?>

@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<title>friendsapp sign up</title>
+<meta name="viewport" content="width=device-width;initial-scale=1">
+        <link rel="stylesheet" href="jquery.mobile-1.4.5.css">
+        <script src="jquery.js"></script>
+        <script src="jquery.mobile-1.4.5.js">
+        </script>
+<script>
+function check()
+{
+var a=document.getElementById("01");
+var b=document.getElementById("02");
+var c=document.getElementById("03");
+var d=document.getElementById("04");
+var e=document.getElementById("05");
+var f=document.getElementById("06");
+if(a.value != b.value){
+document.getElementById("00").innerHTML="ERROR: Both the passwords you entered doesn't match!!";
+}
+else
+{
+<?php
+$severname="localhost";
+$username="";
+$password="";
+$dbname="myDB";
+$conn=new mysqli($servername,$username,$password,$dbname);
+$sql="INSERT INTO friendsapp(name,uname,pass,sques,sans) VALUES (c,d,a,e,f)";
+if($conn->query($sql)===TRUE)
+{$result=$conn->insert_id;
+ $location="profile.php?id=$result";
+ header("Location:$location");
+ exit();
+}
+?>
+}
+}
+</script>
+</head>
+<body style="text-align:center">
+<h1 style="background-color:blue;color:white;text-align:center">friendsapp</h1>
+</br>
+<div id="00" style="text-align:center;color:red"></div>
+<h2>sign up:</h2>
+<form onsubmit="check();return false" method="POST">
+<input id="03" type="text" style="width:510px;height:30px;border-radius:10px" placeholder="Enter name" required></br></br>
+<input id="04" type="text" style="width:510px;height:30px;border-radius:10px" placeholder="Enter suitable user name" required></br></br>
+<input id="01" type="password" style="width:250px;height:30px;border-radius:10px" placeholder="Enter password" required>
+<input id="02" type="password" style="width:250px;height:30px;border-radius:10px" placeholder="Re-enter password" required></br></br>
+<input id="05" type="text" style="width:510px;height:30px;border-radius:10px" placeholder="Enter security question" required></br></br>
+<input id="06" type="text" style="width:510px;height:30px;border-radius:10px" placeholder="Enter security answer" required></br></br>
+</br>
+By clicking sign up,you agree to our <a href="terms.html">Terms</a> and that you have</br>read our <a href="data_policy.html" >Data Policy</a>, including our <a href="cu.html">Cookie Use</a>.</br></br>
+<input type="submit" style="width:510px;height:50px;border-radius:10px;background-color:green;color:white" value="Get started">
+</form>
+</body>
+</html>

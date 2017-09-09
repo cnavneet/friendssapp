@@ -1,0 +1,31 @@
+﻿<?php
+session_start();
+$a=$_GET["text"];
+$b=$_GET["file"];
+$c=$_GET["tag"];
+$d=$_GET["location"];
+$servername="localhost";
+$username="";
+$password="";
+$dbname="myDB";
+$conn=new mysqli($servername,$username,$password,$dbname);
+$sql="INSERT INTO $_SESSION['id']activity (text,file,tag,location) VALUES ($a,$_FILES['file]['name'],$c,$d)";
+if($a=="" && $_FILES['file']['name']!="")
+{exit();
+}
+else
+{ 
+ $conn->query($sql);
+ if($_FILES['file']['name']!="")
+ {
+  copy( $_FILES['file']['name'], "/uploads" ) or
+  die( "Could not copy file!");
+ }
+}
+$conn->close();
+$location="profile.php?id=$_SESSION["id"]";
+header("Location:$location");
+exit();
+}
+?>
+ 
